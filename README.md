@@ -108,3 +108,11 @@ pass in quick inet proto tcp to <firewall> port ssh
 pass quick from 192.168.0.0/24 to { 192.168.1.0/24 192.168.10.0/24 }
 pass quick from { 192.168.1.0/24 192.168.10.0/24 } to 192.168.0.0/24
 ```
+
+### License
+
+MIT
+
+### Author Information
+
+dynax60
