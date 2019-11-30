@@ -1,0 +1,25 @@
+---
+- block:
+    - name: Adjust bgpd.conf(5)
+      template:
+        src: "{{ inventory_hostname }}/bgpd.conf.j2"
+        dest: /etc/bgpd.conf
+        mode: 0640
+        owner: root
+        group: wheel
+        backup: yes
+        validate: /usr/sbin/bgpd -n -f %s
+      notify: reload bgpd config
+
+    - name: Ensure if bgpd service is started and enabled in rc.conf(8)
+      service: name=bgpd state=started enabled=yes
+
+  when: bgpd|bool == true
+  become: true
+  tags: bgpd
+
+- name: Ensure if bgpd is stopped and disabled in rc.conf(8)
+  become: true
+  service: name=bgpd state=stopped enabled=no
+  when: bgpd|bool == false
+  tags: bgpd

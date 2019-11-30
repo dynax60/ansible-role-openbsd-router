@@ -1,0 +1,42 @@
+---
+- include_tasks: resolver.yml
+  tags: resolver
+
+- include_tasks: hostname.yml
+  tags: hostname
+
+- include_tasks: sysctl.yml
+  tags: sysctl
+
+- include_tasks: interfaces.yml
+  tags: interfaces
+
+- include_tasks: gateway.yml
+  tags: [gateway, bgpd]
+
+- include_tasks: timezone.yml
+  tags: [timezone]
+
+- include_tasks: packages.yml
+  tags: [packages, mirror_url, bash, zsh]
+
+- include_tasks: services.yml
+  tags: services
+
+- include_tasks: pf.yml
+  tags: pf
+
+- include_tasks: dhcpd.yml
+  tags: dhcpd
+
+- include_tasks: ospfd.yml
+  tags: ospfd
+
+- include_tasks: bgpd.yml
+  tags: bgpd
+
+- include_tasks: iked.yml
+  tags: iked
+
+- include_tasks: patches.yml
+  tags: patches

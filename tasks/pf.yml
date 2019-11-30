@@ -1,0 +1,10 @@
+---
+- name: Include pf enable tasks
+  include_tasks: pf_enable.yml
+  when: pf|bool == true
+  tags: pf
+
+- name: Include pf disable tasks
+  include_tasks: pf_disable.yml
+  when: pf|bool == false
+  tags: pf

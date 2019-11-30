@@ -1,0 +1,25 @@
+---
+- block:
+    - name: Adjust ospfd.conf(5)
+      template:
+        src: "{{ inventory_hostname }}/ospfd.conf.j2"
+        dest: /etc/ospfd.conf
+        mode: 0640
+        owner: root
+        group: wheel
+        backup: yes
+        validate: /usr/sbin/ospfd -n -f %s
+      notify: reload ospfd config
+
+    - name: Ensure if ospfd service is started and enabled in rc.conf(8)
+      service: name=ospfd state=started enabled=yes
+
+  when: ospfd|bool == true
+  become: true
+  tags: ospfd
+
+- name: Ensure if ospfd is stopped and disabled in rc.conf(8)
+  become: true
+  service: name=ospfd state=stopped enabled=no
+  when: ospfd|bool == false
+  tags: ospfd

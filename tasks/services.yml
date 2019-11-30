@@ -1,0 +1,8 @@
+---
+- name: Enable services
+  become: true
+  service: name="{{ svc }}" state=started enabled=True
+  loop: "{{ services | default(services_default) }}"
+  loop_control:
+    loop_var: svc
+  tags: services

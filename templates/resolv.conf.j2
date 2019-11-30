@@ -1,0 +1,4 @@
+lookup file bind
+{% for dns_srv in dns_servers | default(dns_servers, true) %}
+nameserver {{ dns_srv | mandatory | ipaddr('address') }}
+{% endfor %}

@@ -1,0 +1,18 @@
+---
+- name: Install latest patches
+  become: true
+  shell: syspatch
+  register: syspatch
+  changed_when: syspatch.stdout != ''
+  tags: patches
+
+- name: Debug
+  debug: msg="{{ syspatch.stdout }}"
+  when: syspatch.stdout != ''
+  tags: patches
+
+- name: Reboot
+  become: true
+  reboot:
+  when: "'reboot to load the new kernel' in syspatch.stdout"
+  tags: patches

@@ -1,0 +1,38 @@
+---
+- block:
+    - name: Adjust pf.conf(5)
+      template:
+        src: "{{ inventory_hostname }}/pf.conf.j2"
+        dest: /etc/pf.conf
+        mode: 0640
+        owner: root
+        group: wheel
+        backup: yes
+        validate: /sbin/pfctl -n -f %s
+      notify: reload pf config
+
+    - name: Get pf rc status
+      shell: rcctl get pf
+      register: pf_rc_status
+      failed_when: "pf_rc_status.rc > 1" # service does not exist
+      changed_when: "pf_rc_status.rc == 1" # change status if service is disabled
+
+    - name: Enable pf in rc script if its status is off
+      raw: rcctl enable pf
+      when: pf_rc_status.changed
+
+    - name: Get status of pf
+      shell: pfctl -si | awk '/Status:/ { print $2 }'
+      register: pf_status
+      changed_when: "pf_status.stdout == 'Disabled'"
+
+    - name: Ensure pf is enabled
+      shell: pfctl -e
+      when: pf_status.changed
+
+    - name: Ensure if pflogd is started and enabled in rc.conf(8)
+      service: name=pflogd state=started enabled=yes
+
+  when: pf|bool == true
+  become: true
+  tags: pf

@@ -1,0 +1,41 @@
+---
+- name: change hostname
+  become: true
+  shell: hostname $(cat /etc/myname)
+
+- name: set default route
+  become: true
+  shell: route delete default; route add default {{ mygate }}
+
+- name: change interfaces
+  become: true
+  shell: "sh /etc/netstart {{ item.interface }} || /usr/bin/true"
+  when: item.changed
+  loop: "{{ interfaces_notify.results }}"
+  loop_control:
+    loop_var: item
+    label: [ "{{ item.interface }}" ]
+
+- name: remove default route
+  become: true
+  shell: route delete default
+
+- name: reload bgpd config
+  become: true
+  shell: bgpctl reload
+
+- name: reload ospfd config
+  become: true
+  shell: ospfctl reload
+
+- name: reload dhcpd config
+  become: true
+  service: name=dhcpd state=restarted enabled=yes arguments="{{ dhcpd_interfaces | mandatory | join(' ') }}"
+
+- name: reload iked config
+  become: true
+  service: name=iked state=restarted enabled=yes
+
+- name: reload pf config
+  become: true
+  raw: pfctl -f /etc/pf.conf

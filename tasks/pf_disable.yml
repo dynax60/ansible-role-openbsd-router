@@ -1,0 +1,27 @@
+---
+- block:
+    - name: Get pf rc status
+      shell: rcctl get pf
+      register: pf_rc_status
+      failed_when: "pf_rc_status.rc > 1" # service does not exist
+      changed_when: "pf_rc_status.rc == 0" # change status if service is enabled
+
+    - name: Disable pf in rc script if its status is on
+      raw: rcctl disable pf
+      when: pf_rc_status.changed
+
+    - name: Get status of pf
+      shell: pfctl -si | awk '/Status:/ { print $2 }'
+      register: pf_status
+      changed_when: "pf_status.stdout == 'Enabled'"
+
+    - name: Ensure pf is disabled
+      shell: pfctl -d
+      when: pf_status.changed
+
+    - name: Ensure if pflogd is stopped and disabled in rc.conf(8)
+      service: name=pflogd state=stopped enabled=no
+
+  when: pf|bool == false
+  become: true
+  tags: pf

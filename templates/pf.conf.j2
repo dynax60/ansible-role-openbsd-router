@@ -1,0 +1,6 @@
+# Packet filter on {{ inventory_hostname }}
+
+set skip on lo
+
+block return    # block stateless traffic
+pass            # establish keep-state

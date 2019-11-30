@@ -1,0 +1,13 @@
+---
+- name: Set OpenBSD mirror server location
+  become: true
+  template: src=installurl.j2 dest=/etc/installurl mode=0644 owner=root group=wheel
+  when: mirror_url is defined and mirror_url != ''
+  tags: [packages, mirror_url]
+
+- name: Install additional packages
+  become: true
+  openbsd_pkg:
+    name: ['arping', 'htop', 'pftop', 'mtr--', 'rsync--', 'vim--no_x11', 'wget']
+    state: present
+  tags: packages

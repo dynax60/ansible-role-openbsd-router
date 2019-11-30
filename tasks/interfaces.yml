@@ -1,0 +1,15 @@
+---
+- name: Setup interfaces
+  become: true
+  template:
+    src: hostname.if.j2
+    dest: "/etc/hostname.{{ interface }}"
+    mode: 0640
+    owner: root
+    group: wheel
+  register: interfaces_notify
+  loop: "{{ interfaces.keys() | list }}"
+  loop_control:
+    loop_var: interface
+  notify: change interfaces
+  tags: interfaces

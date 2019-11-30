@@ -1,0 +1,10 @@
+{% for peer in iked_peers | mandatory %}
+ikev2 "{{ iked_peers[peer].label | mandatory }}" {{ iked_peers[peer].mode | mandatory }} esp \
+{%  for flow in iked_peers[peer].flows | mandatory %}
+    {{ flow }} \
+{%  endfor %}
+    peer {{ peer }} \
+    srcid {{ iked_peers[peer].srcid | mandatory }} \
+    dstid {{ iked_peers[peer].dstid | mandatory }} \
+    rsa
+{% endfor %}
