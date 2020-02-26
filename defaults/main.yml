@@ -1,6 +1,7 @@
 ---
 bgpd: false
 dhcpd: false
+dns_search: ''
 dns_servers: ['8.8.8.8', '8.8.4.4']
 iked: false
 mirror_url: https://ftp.yandex.ru/openbsd

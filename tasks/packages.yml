@@ -8,6 +8,6 @@
 - name: Install additional packages
   become: true
   openbsd_pkg:
-    name: ['arping', 'htop', 'pftop', 'mtr--', 'rsync--', 'vim--no_x11', 'wget']
+    name: ['py3-pip', 'arping', 'htop', 'pftop', 'mtr--', 'rsync--', 'vim--no_x11', 'wget']
     state: present
   tags: packages
