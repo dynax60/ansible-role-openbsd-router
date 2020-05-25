@@ -25,7 +25,7 @@
 
 - name: reload dhcpd config
   become: true
-  service: name=dhcpd state=restarted enabled=yes arguments="{{ dhcpd_interfaces | mandatory | join(' ') }}"
+  service: name=dhcpd state=restarted enabled=yes arguments="{{ dhcpd_options | mandatory }}"
 
 - name: reload iked config
   become: true

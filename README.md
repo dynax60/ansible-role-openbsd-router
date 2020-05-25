@@ -34,12 +34,12 @@ timezone: UTC # see /usr/share/zoneinfo
 
 * interfaces (dictionary) - the key is the name of the interface, the value is the interface settings, 
 see hostname.if(5)
-* dhcpd_interfaces (list) - list of dhcpd interfaces, required if dhcpd is true
+* dhcpd_options (list) - list of dhcpd interfaces, required if dhcpd is true
 
 ### Optional variables
 
 * bgpd (bool) - enables bgpd. This option requires bgpd.conf.j2 template, see bgpd.conf(5)
-* dhcpd (bool) - enables dhcpd. This option requires the definition of dhcpd_interfaces 
+* dhcpd (bool) - enables dhcpd. This option requires the definition of dhcpd_options 
 and dhcpd.conf.j2 template, see dhcpd.conf(5)
 * dns_servers (list) - ip addresses of nameservers. Default settings: `['8.8.8.8', '8.8.4.4']`
 * hostname (scalar) - the symbolic name of the host machine, see myname(5)

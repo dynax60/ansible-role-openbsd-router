@@ -12,7 +12,7 @@
       notify: reload dhcpd config
 
     - name: Ensure if dhcpd service is started and enabled in rc.conf(8)
-      service: name=dhcpd state=started enabled=yes arguments="{{ dhcpd_interfaces | mandatory | join(' ') }}"
+      service: name=dhcpd state=started enabled=yes arguments="{{ dhcpd_options | mandatory }}"
       notify: reload dhcpd config
 
   when: dhcpd|bool == true
