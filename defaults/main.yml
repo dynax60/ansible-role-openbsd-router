@@ -7,6 +7,8 @@ iked: false
 mirror_url: https://ftp.yandex.ru/openbsd
 ospfd: false
 pf: false
+pf_conf_tpl: "{{ inventory_hostname }}/pf.conf.j2"
+
 services_default:
   - cron
   - ntpd
