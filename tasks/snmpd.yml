@@ -32,3 +32,4 @@
   service: name=snmpd state=stopped enabled=no
   when: snmpd|bool == false
   tags: snmpd
+  
