@@ -84,7 +84,6 @@ mygate: 192.168.0.1
 dns_servers: ['127.0.0.1', '8.8.8.8', '8.8.4.4']
 pf: yes
 ntpd: yes
-ntpd_listen_on: "{{ hostvars[inventory_hostname].ansible_interfaces | select('match','carp.*') | difference(['carp2', 'carp3', 'carp9']) | map('regex_replace', '^(.*)$', 'ansible_\\1') | map('extract', hostvars[inventory_hostname], ['ipv4', 0, 'address']) | list }}"
 iked: yes
 iked_peers:
   2.2.2.2:
