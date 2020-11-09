@@ -34,3 +34,7 @@
 - name: reload pf config
   become: true
   raw: pfctl -f /etc/pf.conf
+
+- name: restart snmpd
+  service: name=snmpd state=restarted enabled=true
+  

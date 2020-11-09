@@ -1,0 +1,34 @@
+---
+- block:
+    - name: Adjust snmpd.conf(5) config from snmpd_conf variable
+      copy:
+        dest: /etc/snmpd.conf
+        content: "{{ snmpd_conf }}"
+        owner: root
+        group: wheel
+        mode: '0600'
+      when: snmpd_conf is defined
+      notify: restart snmpd    
+
+    - name: Adjust snmpd.conf(5) config from template {{ snmpd_conf_tpl }}
+      template:
+        src: "{{ snmpd_conf_tpl }}"
+        dest: /etc/snmpd.conf
+        owner: root
+        group: wheel
+        mode: '0600'
+      when: snmpd_conf is not defined
+      notify: restart snmpd
+
+    - name: Ensure if snmpd service is started and enabled in rc.conf(8)
+      service: name=snmpd state=started enabled=yes
+
+  when: snmpd|bool == true
+  become: true
+  tags: snmpd
+
+- name: Ensure if snmpd is stopped and disabled in rc.conf(8)
+  become: true
+  service: name=snmpd state=stopped enabled=no
+  when: snmpd|bool == false
+  tags: snmpd

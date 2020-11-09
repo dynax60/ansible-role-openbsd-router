@@ -1,0 +1,3 @@
+listen on {{ snmpd_listen_on | mandatory }}
+system services 74
+read-only community {{ snmpd_community | mandatory}}

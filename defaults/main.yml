@@ -1,14 +1,21 @@
 ---
 bgpd: false
+
 dhcpd: false
+
 dns_search: ''
 dns_servers: ['8.8.8.8', '8.8.4.4']
+
 iked: false
+
 mirror_url: https://ftp.yandex.ru/openbsd
+
 ospfd: false
+
 pf: false
 pf_conf_tpl: "{{ inventory_hostname }}/pf.conf.j2"
 
+# Enable additional services
 services_default:
   - cron
   - ntpd
@@ -17,7 +24,14 @@ services_default:
   - sshd
   - syslogd
   - unbound
+
+snmpd: false
+snmpd_listen_on: 127.0.0.1
+snmpd_community: public
+snmpd_conf_tpl: "snmpd.conf.j2"
+
 sysctl_default:
   net.inet.ip.forwarding: 1
   net.inet.carp.preempt: 1
+
 timezone: UTC # see /usr/share/zoneinfo
