@@ -1,0 +1,34 @@
+---
+- block:
+    - name: Adjust ntpd.conf(5) config from ntpd_conf variable
+      copy:
+        dest: /etc/ntpd.conf
+        content: "{{ ntpd_conf }}"
+        owner: root
+        group: wheel
+        mode: '0644'
+      when: ntpd_conf is defined
+      notify: restart ntpd    
+
+    - name: Adjust ntpd.conf(5) config from template {{ ntpd_conf_tpl }}
+      template:
+        src: "{{ ntpd_conf_tpl }}"
+        dest: /etc/ntpd.conf
+        owner: root
+        group: wheel
+        mode: '0644'
+      when: ntpd_conf is not defined
+      notify: restart ntpd
+
+    - name: Ensure if ntpd service is started and enabled in rc.conf(8)
+      service: name=ntpd state=started enabled=yes
+
+  when: ntpd|bool == true
+  become: true
+  tags: ntpd
+
+- name: Ensure if ntpd is stopped and disabled in rc.conf(8)
+  become: true
+  service: name=ntpd state=stopped enabled=no
+  when: ntpd|bool == false
+  tags: ntpd

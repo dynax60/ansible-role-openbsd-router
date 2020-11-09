@@ -10,6 +10,10 @@ iked: false
 
 mirror_url: https://ftp.yandex.ru/openbsd
 
+ntpd: true
+ntpd_conf_tpl: "ntpd.conf.j2"
+ntpd_servers: pool.ntp.org
+
 ospfd: false
 
 pf: false
@@ -18,7 +22,6 @@ pf_conf_tpl: "{{ inventory_hostname }}/pf.conf.j2"
 # Enable additional services
 services_default:
   - cron
-  - ntpd
   - pflogd
   - smtpd
   - sshd

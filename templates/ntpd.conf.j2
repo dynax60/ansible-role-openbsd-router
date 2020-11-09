@@ -1,0 +1,10 @@
+{% for address in ntpd_listen_on | default([]) %}
+listen on {{ address | mandatory | ipaddr('address') }}
+{% endfor %}
+
+servers {{ ntpd_servers | mandatory }}
+sensor *
+
+constraint from "9.9.9.9"              # quad9 v4 without DNS
+constraint from "2620:fe::fe"          # quad9 v6 without DNS
+constraints from "www.google.com"      # intentionally not 8.8.8.8

@@ -37,4 +37,6 @@
 
 - name: restart snmpd
   service: name=snmpd state=restarted enabled=true
-  
+
+- name: restart ntpd
+  service: name=ntpd state=restarted enabled=true

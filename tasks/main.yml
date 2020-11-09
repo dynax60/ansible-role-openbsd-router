@@ -41,5 +41,8 @@
 - include_tasks: snmpd.yml
   tags: snmpd
 
+- include_tasks: ntpd.yml
+  tags: ntpd
+
 - include_tasks: patches.yml
   tags: patches
