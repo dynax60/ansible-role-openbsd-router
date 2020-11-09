@@ -14,16 +14,22 @@ dhcpd: false
 dns_servers: ['8.8.8.8', '8.8.4.4']
 iked: false
 mirror_url: https://ftp.yandex.ru/openbsd
+ntpd: true
+ntpd_conf_tpl: "ntpd.conf.j2"
+ntpd_servers: pool.ntp.org
 ospfd: false
 pf: false
 services_default:
   - cron
-  - ntpd
   - pflogd
   - smtpd
   - sshd
   - syslogd
   - unbound
+snmpd: false
+snmpd_listen_on: 127.0.0.1
+snmpd_community: public
+snmpd_conf_tpl: "snmpd.conf.j2"
 sysctl_default:
   net.inet.ip.forwarding: 1
   net.inet.carp.preempt: 1
@@ -43,12 +49,22 @@ see hostname.if(5)
 and dhcpd.conf.j2 template, see dhcpd.conf(5)
 * dns_servers (list) - ip addresses of nameservers. Default settings: `['8.8.8.8', '8.8.4.4']`
 * hostname (scalar) - the symbolic name of the host machine, see myname(5)
-* iked (bool) - enabled iked. This option requires the defenition iked variables (see example below)
+* iked (bool) - enables iked. This option requires the defenition iked variables (see example below)
+* ntpd (bool) - enables ntpd. This option requires the configuration within ntpd_conf variable or 
+  in the template file defined in ntpd_conf_tpl variable.
+* ntpd_conf (scalar) - ntpd configuration (see also template if it's not defined).
+* ntpd_conf_tpl (scalar) - ntpd template filename
+* ntpd_listen_on (list) - addreses which ntpd must be listen on. By default it's not listen on interfaces.
+* ntpd_servers (scalar) - ntpd server to synchronize to. (works for temaplate only).
 * mygate (scalar) - the address of the gateway host, see mygate(5). The gateway will be removed
 if bgpd defined.
 * ospfd (bool) - enables ospfd. This option requires ospfd.conf.j2 template, see ospfd.conf(5)
 * pf (bool) - enables packet filter. This option requires pf.conf.j2 template, see pf.conf(5)
 * services (list) - services that you need to enable. Overrides default ones. See default values below.
+* snmpd (bool) - enables snmpd.
+* snmpd_listen_on - address which snmpd must be listen on. Default is 127.0.0.1.
+* snmpd_community - community name. Default is public.
+* snmpd_conf_tpl - snmpd template filename
 * sysctl (dictionary) - sysctl key/value pairs. See default values below.
 * timezone (scalar) - timezone, see /usr/share/zoneinfo
 
@@ -67,6 +83,8 @@ interfaces:
 mygate: 192.168.0.1
 dns_servers: ['127.0.0.1', '8.8.8.8', '8.8.4.4']
 pf: yes
+ntpd: yes
+ntpd_listen_on: "{{ hostvars[inventory_hostname].ansible_interfaces | select('match','carp.*') | difference(['carp2', 'carp3', 'carp9']) | map('regex_replace', '^(.*)$', 'ansible_\\1') | map('extract', hostvars[inventory_hostname], ['ipv4', 0, 'address']) | list }}"
 iked: yes
 iked_peers:
   2.2.2.2:
