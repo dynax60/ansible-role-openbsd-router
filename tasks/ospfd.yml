@@ -15,11 +15,9 @@
       service: name=ospfd state=started enabled=yes
 
   when: ospfd|bool == true
-  become: true
   tags: ospfd
 
 - name: Ensure if ospfd is stopped and disabled in rc.conf(8)
-  become: true
   service: name=ospfd state=stopped enabled=no
   when: ospfd|bool == false
   tags: ospfd

@@ -15,11 +15,9 @@
       service: name=bgpd state=started enabled=yes
 
   when: bgpd|bool == true
-  become: true
   tags: bgpd
 
 - name: Ensure if bgpd is stopped and disabled in rc.conf(8)
-  become: true
   service: name=bgpd state=stopped enabled=no
   when: bgpd|bool == false
   tags: bgpd

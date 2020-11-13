@@ -1,6 +1,5 @@
 ---
 - name: Setup sysctl.conf
-  become: true
   sysctl: name="{{ sysctl.0 }}" value="{{ sysctl.1 }}" state=present ignoreerrors=yes
   loop: "{{ sysctl_default | combine(sysctl|default({})) | dictsort }}"
   loop_control:

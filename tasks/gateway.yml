@@ -1,13 +1,11 @@
 ---
 - name: Setup gateway
-  become: true
   template: src=mygate.j2 dest=/etc/mygate mode=0644 owner=root group=wheel
   when: mygate is defined and mygate != '' and bgpd|bool == false
   notify: set default route
   tags: gateway
 
 - name: Remove gateway if mygate is not defined or if bgpd enabled
-  become: true
   file: state=absent path="/etc/mygate"
   when: (mygate is not defined or mygate == '') or bgpd|bool == true
   notify: remove default route

@@ -16,11 +16,9 @@
       notify: reload dhcpd config
 
   when: dhcpd|bool == true
-  become: true
   tags: dhcpd
 
 - name: Ensure if dhcpd is stopped and disabled in rc.conf(8)
-  become: true
   service: name=dhcpd state=stopped enabled=no
   when: dhcpd|bool == false
   tags: dhcpd

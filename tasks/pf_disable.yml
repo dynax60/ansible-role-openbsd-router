@@ -23,5 +23,4 @@
       service: name=pflogd state=stopped enabled=no
 
   when: pf|bool == false
-  become: true
   tags: pf

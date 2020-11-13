@@ -24,12 +24,9 @@
       service: name=ntpd state=started enabled=yes
 
   when: ntpd|bool == true
-  become: true
   tags: ntpd
 
 - name: Ensure if ntpd is stopped and disabled in rc.conf(8)
-  become: true
   service: name=ntpd state=stopped enabled=no
   when: ntpd|bool == false
   tags: ntpd
-  

@@ -1,5 +1,4 @@
 ---
 - name: Setup resolver
-  become: true
   template: src=resolv.conf.j2 dest=/etc/resolv.conf mode=0644 owner=root group=wheel
   tags: resolver

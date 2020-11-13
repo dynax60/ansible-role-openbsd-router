@@ -1,0 +1,44 @@
+---
+- block:
+    - name: Adjust isakmpd.conf(5)
+      copy:
+        content: "{{ isakmpd_global }}"
+        dest: /etc/isakmpd/isakmpd.conf
+        mode: 0600
+        owner: root
+        group: wheel
+        backup: yes
+        validate: /sbin/isakmpd -n -c %s
+      when: isakmpd_global is defined
+      notify: restart ipsec
+
+    - name: Adjust ipsec.conf(5)
+      copy:
+        content: "{{ isakmpd_conf }}"
+        dest: /etc/ipsec.conf
+        mode: 0600
+        owner: root
+        group: wheel
+        backup: yes
+        validate: /sbin/ipsecctl -n -f %s
+      notify: restart ipsec
+
+    - name: Ensure if isakmpd service is started and enabled in rc.conf(8)
+      service: name=isakmpd state=started enabled=yes args=-4K
+      notify: restart ipsec
+
+    - name: Ensure if ipsec service is enabled in rc.conf(8)
+      service: name=ipsec enabled=yes
+
+  when: isakmpd|bool == true
+  tags: isakmpd
+
+- name: Ensure if isakmpd is stopped and disabled in rc.conf(8)
+  service: name=isakmpd state=stopped enabled=no
+  when: isakmpd|bool == false
+  tags: isakmpd
+
+- name: Ensure if ipsec is disabled in rc.conf(8)
+  service: name=ipsec enabled=no
+  when: isakmpd|bool == false
+  tags: isakmpd

@@ -28,11 +28,9 @@
       notify: reload iked config
 
   when: iked|bool == true
-  become: true
   tags: iked
 
 - name: Ensure if iked is stopped and disabled in rc.conf(8)
-  become: true
   service: name=iked state=stopped enabled=no
   when: iked|bool == false
   tags: iked

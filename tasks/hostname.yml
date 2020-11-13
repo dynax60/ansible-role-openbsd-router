@@ -1,6 +1,5 @@
 ---
 - name: Setup hostname
-  become: true
   template: src=myname.j2 dest=/etc/myname mode=0644 owner=root group=wheel
   notify: change hostname
   when: hostname is defined

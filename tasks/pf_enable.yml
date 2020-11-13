@@ -34,5 +34,4 @@
       service: name=pflogd state=started enabled=yes
 
   when: pf|bool == true
-  become: true
   tags: pf

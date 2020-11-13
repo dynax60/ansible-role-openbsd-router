@@ -38,6 +38,9 @@
 - include_tasks: iked.yml
   tags: iked
 
+- include_tasks: isakmpd.yml
+  tags: isakmpd
+
 - include_tasks: snmpd.yml
   tags: snmpd
 

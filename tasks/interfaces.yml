@@ -1,6 +1,5 @@
 ---
 - name: Setup interfaces
-  become: true
   template:
     src: hostname.if.j2
     dest: "/etc/hostname.{{ interface }}"
