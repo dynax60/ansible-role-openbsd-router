@@ -14,7 +14,7 @@
 
     - name: Adjust ipsec.conf(5)
       copy:
-        content: "{{ isakmpd_conf }}"
+        content: "{{ isakmpd_conf | mandatory }}"
         dest: /etc/ipsec.conf
         mode: 0600
         owner: root

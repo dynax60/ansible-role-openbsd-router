@@ -50,6 +50,9 @@ and dhcpd.conf.j2 template, see dhcpd.conf(5)
 * dns_servers (list) - ip addresses of nameservers. Default settings: `['8.8.8.8', '8.8.4.4']`
 * hostname (scalar) - the symbolic name of the host machine, see myname(5)
 * iked (bool) - enables iked. This option requires the defenition iked variables (see example below)
+* isakmpd (bool) - enables isakmpd. This option requires the isakmpd_global defenition.
+* isakmpd_global (scalar) - configuration will be written to /etc/isakmpd/isakmpd.conf (optional)
+* isakmpd_conf (scalar) - configuration will be written to /etc/ipsec.conf (mandatory)
 * ntpd (bool) - enables ntpd. This option requires the configuration within ntpd_conf variable or 
   in the template file defined in ntpd_conf_tpl variable.
 * ntpd_conf (scalar) - ntpd configuration (see also template if it's not defined).
