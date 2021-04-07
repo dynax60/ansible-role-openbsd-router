@@ -4,7 +4,7 @@
       template:
         src: "{{ pf_conf_tpl }}"
         dest: /etc/pf.conf
-        mode: 0640
+        mode: 0600
         owner: root
         group: wheel
         backup: yes
