@@ -1,31 +1,46 @@
 ---
 - block:
-    - name: Write remote public RSA keys into /etc/iked/pubkeys/ipv4/ directory
-      blockinfile:
-        path: "/etc/iked/pubkeys/ipv4/{{ peer }}"
-        block: "{{ iked_peers[peer].public_key | mandatory }}"
-        create: yes
-        owner: root
-        group: wheel
-        mode: 0644
-      loop: "{{ iked_peers.keys() | mandatory | list }}"
-      loop_control:
-        loop_var: peer
+  - name: Configuring iked to use public key authentication
+    block:
+      - name: Write remote public RSA keys into /etc/iked/pubkeys/ipv4/ directory
+        blockinfile:
+          path: "/etc/iked/pubkeys/ipv4/{{ peer }}"
+          block: "{{ iked_peers[peer].public_key | mandatory }}"
+          create: yes
+          owner: root
+          group: wheel
+          mode: 0644
+        loop: "{{ iked_peers.keys() | mandatory | list }}"
+        loop_control:
+          loop_var: peer
 
-    - name: Adjust iked.conf(5)
-      template:
-        src: "iked.conf.j2"
-        dest: /etc/iked.conf
-        mode: 0600
-        owner: root
-        group: wheel
-        backup: yes
-        validate: /sbin/iked -n -f %s
-      notify: reload iked config
+      - name: Adjust iked.conf(5) from template
+        template:
+          src: "iked.conf.j2"
+          dest: /etc/iked.conf
+          mode: 0600
+          owner: root
+          group: wheel
+          backup: yes
+          validate: /sbin/iked -n -f %s
+        notify: reload iked config
+    when: iked_peers is defined
 
-    - name: Ensure if iked service is started and enabled in rc.conf(8)
-      service: name=iked state=started enabled=yes
-      notify: reload iked config
+  - name: Manual adjust iked.conf(5)
+    copy:
+      content: "{{ iked_conf }}"
+      dest: /etc/iked.conf
+      mode: 0600
+      owner: root
+      group: wheel
+      backup: yes
+      validate: /sbin/iked -n -f %s
+    when: iked_conf is defined and iked_peers is not defined
+    notify: reload iked config
+
+  - name: Ensure if iked service is started and enabled in rc.conf(8)
+    service: name=iked state=started enabled=yes
+    notify: reload iked config
 
   when: iked|bool == true
   tags: iked
