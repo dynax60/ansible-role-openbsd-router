@@ -9,3 +9,13 @@
     name: ['py3-pip', 'arping', 'htop', 'pftop', 'mtr--', 'rsync--', 'vim--no_x11', 'wget']
     state: present
   tags: packages
+
+- name: Install user-defined packages
+  openbsd_pkg:
+    name: "{{ pkg }}"
+    state: present
+  loop: "{{ additional_packages }}"
+  loop_control:
+    loop_var: pkg
+  when: additional_packages is defined
+  tags: packages
