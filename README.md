@@ -44,6 +44,7 @@ see hostname.if(5)
 
 ### Optional variables
 
+* additional_packages (list) - install additional user-defined packages
 * bgpd (bool) - enables bgpd. This option requires bgpd.conf.j2 template, see bgpd.conf(5)
 * dhcpd (bool) - enables dhcpd. This option requires the definition of dhcpd_options 
 and dhcpd.conf.j2 template, see dhcpd.conf(5)
