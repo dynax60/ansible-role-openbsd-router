@@ -6,7 +6,9 @@
   shell: route delete default; route add default {{ mygate }}
 
 - name: change interfaces
-  reboot:
+  shell: sh /etc/netstart
+  ignore_errors: True
+  # reboot:
 
 - name: remove default route
   shell: route delete default
