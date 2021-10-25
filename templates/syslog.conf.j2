@@ -1,0 +1,26 @@
+# /etc/syslog.conf
+
+*.notice;auth,authpriv,cron,ftp,kern,lpr,mail,user.none /var/log/messages
+kern.debug;syslog,user.info                             /var/log/messages
+auth.info                                               /var/log/authlog
+authpriv.debug                                          /var/log/secure
+cron.info                                               /var/cron/log
+daemon.info                                             /var/log/daemon
+ftp.info                                                /var/log/xferlog
+lpr.debug                                               /var/log/lpd-errs
+mail.info                                               /var/log/maillog
+
+#*.notice;auth,authpriv,cron,ftp,kern,lpr,mail,user.none        @loghost
+#auth,daemon,syslog,user.info;authpriv,kern.debug               @loghost
+
+# Uncomment to log messages from doas(1) to its own log file.  Matches are done
+# based on the program name.
+# Program-specific logs:
+#!doas
+#*.*                                                    /var/log/doas
+
+{% if syslog_server is defined %}
+*.*                                                     @{{ syslog_server }}
+{% endif %}{% if syslog_lines is defined %}
+{{ syslog_lines }}
+{% endif %}

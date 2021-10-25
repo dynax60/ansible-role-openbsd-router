@@ -49,3 +49,11 @@
 
 - include_tasks: patches.yml
   tags: patches
+
+- include_tasks: syslogd.yml
+  tags:
+    - syslog
+    - syslogd
+
+- include_tasks: newsyslog.yml
+  tags: newsyslog

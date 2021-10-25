@@ -2,17 +2,6 @@
 - name: change hostname
   shell: hostname $(cat /etc/myname)
 
-- name: set default route
-  shell: route delete default; route add default {{ mygate }}
-
-- name: change interfaces
-  shell: sh /etc/netstart
-  ignore_errors: True
-  # reboot:
-
-- name: remove default route
-  shell: route delete default
-
 - name: reload bgpd config
   shell: bgpctl reload
 
@@ -45,3 +34,17 @@
 
 - name: restart ntpd
   service: name=ntpd state=restarted enabled=true
+
+- name: restart syslogd
+  service: name=syslogd state=restarted enabled=true
+
+- name: set default route
+  shell: route delete default; route add default {{ mygate }}
+
+- name: remove default route
+  shell: route delete default
+
+- name: change interfaces
+  shell: sh /etc/netstart
+  ignore_errors: True
+  # reboot:

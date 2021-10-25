@@ -1,8 +1,14 @@
 ---
-- name: Setup gateway
-  template: src=mygate.j2 dest=/etc/mygate mode=0644 owner=root group=wheel
+- block:
+  - name: Setup gateway
+    template: src=mygate.j2 dest=/etc/mygate mode=0644 owner=root group=wheel
+    register: gw
+    
+  - name: set default route
+    shell: route delete default; route add default {{ mygate }}
+    when: gw.changed
+
   when: mygate is defined and mygate != '' and bgpd|bool == false
-  notify: set default route
   tags: gateway
 
 - name: Remove gateway if mygate is not defined or if bgpd enabled

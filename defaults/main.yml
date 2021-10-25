@@ -39,3 +39,6 @@ sysctl_default:
   net.inet.carp.preempt: 1
 
 timezone: UTC # see /usr/share/zoneinfo
+
+syslog_conf_tpl: "syslog.conf.j2"
+newsyslog_conf_tpl: "newsyslog.conf.j2"

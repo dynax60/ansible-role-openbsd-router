@@ -1,0 +1,29 @@
+---
+- block:
+    - name: Write syslog.conf(8) config from syslog_conf variable
+      copy:
+        dest: /etc/syslog.conf
+        content: "{{ syslog_conf }}"
+        owner: root
+        group: wheel
+        mode: '0644'
+      when: syslog_conf is defined
+      notify: restart syslogd    
+
+    - name: Adjust syslog.conf(8) config from template {{ syslog_conf_tpl }}
+      template:
+        src: "{{ syslog_conf_tpl }}"
+        dest: /etc/syslog.conf
+        owner: root
+        group: wheel
+        mode: '0644'
+      when: syslog_server is defined or syslog_lines is defined
+      notify: restart syslogd
+
+    - name: Ensure if syslogd service is started and enabled in rc.conf(8)
+      service: name=syslogd state=started enabled=yes
+
+  when: syslog_conf is defined or syslog_server is defined or syslog_lines is defined
+  tags:
+    - syslog
+    - syslogd

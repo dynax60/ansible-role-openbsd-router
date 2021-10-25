@@ -3,6 +3,7 @@
   shell: syspatch
   register: syspatch
   changed_when: syspatch.stdout != ''
+  ignore_errors: True
   tags: patches
 
 - name: Debug
