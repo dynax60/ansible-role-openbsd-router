@@ -2,7 +2,7 @@
 - block:
     - name: Write newsyslog.conf(8) config from newsyslog_conf variable
       copy:
-        dest: /etc/syslog.conf
+        dest: /etc/newsyslog.conf
         content: "{{ newsyslog_conf }}"
         owner: root
         group: wheel
@@ -12,11 +12,11 @@
     - name: Adjust newsyslog.conf(8) config from template {{ newsyslog_conf_tpl }}
       template:
         src: "{{ newsyslog_conf_tpl }}"
-        dest: /etc/syslog.conf
+        dest: /etc/newsyslog.conf
         owner: root
         group: wheel
         mode: '0644'
-      when: newsyslog_lines is not defined
+      when: newsyslog_conf is not defined
 
   when: newsyslog_conf is defined or newsyslog_lines is defined
   tags: newsyslog
