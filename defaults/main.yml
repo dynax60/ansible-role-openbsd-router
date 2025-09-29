@@ -32,6 +32,7 @@ services_default:
 snmpd: false
 snmpd_listen_on: 127.0.0.1
 snmpd_community: public
+snmpd_flags: "read snmpv2c"
 snmpd_conf_tpl: "snmpd.conf.j2"
 
 sysctl_default:
